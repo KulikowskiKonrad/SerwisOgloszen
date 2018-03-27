@@ -1,0 +1,115 @@
+﻿@using SerwisOgloszen.Enums;
+@using SerwisOgloszen.BazaDanych;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serwis ogłoszeń</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/js")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $.validator.setDefaults({
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('has-error');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('has-error');
+            },
+            errorElement: 'span',
+            errorClass: 'help-block',
+            errorPlacement: function (error, element) {
+                if (element.parent('.input-group').length) {
+                    error.insertAfter(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        });
+
+
+        $(document).ready(function () {
+            autosize($('textarea'));
+            $('#link-wyloguj').click(function () {
+                $('#form-wyloguj').submit();
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Serwis ogłoszeń", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
+                    @*<li>@Html.ActionLink("Stare ogłoszenia", "ListaOgloszen", "Ogloszenie")</li>*@
+                    <li>@Html.ActionLink("Lista ogłoszeń", "ListaOgloszen2", "Ogloszenie")</li>
+                    @if (Request.IsAuthenticated == true && (RolaUzytkownika)((Uzytkownik)Session["uzytkownik"]).Rola == RolaUzytkownika.Administrator)
+                    {
+                        <li>
+                            @Html.ActionLink("Lista Użytkowników", "ListaUzytkownikow", "Uzytkownik")
+                        </li>
+                            <li>
+                                @Html.ActionLink("Wiadomości", "ListaKonwersacji", "Wiadomosc")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Lista kategorii", "ListaKategorii", "Kategoria")
+                            </li>
+
+                    }
+                    else if (Request.IsAuthenticated == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Wiadomości", "ListaKonwersacji", "Wiadomosc");
+                        </li>
+                    }
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        @if (Request.IsAuthenticated == false)
+                        {
+                        <li>@Html.ActionLink("Zaloguj", "Zaloguj", "Uzytkownik")</li>
+                        <li>@Html.ActionLink("Zarejestruj", "Zarejestruj", "Uzytkownik")</li>
+
+                        }
+                        else
+                        {
+                            <li>
+                                <a id="link-wyloguj" href="#">Wyloguj</a>
+                                @using (Html.BeginForm("Wyloguj", "Uzytkownik", FormMethod.Post, new { id = "form-wyloguj" }))
+                                {
+
+                                }
+                            </li>
+                            <li>
+                                <a>@User.Identity.Name</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year — Serwis ogłoszeń</p>
+                @*@User.Identity.Name
+                    @(((SerwisOgloszen.BazaDanych.Uzytkownik)Session["uzytkownik"]).Id)*@
+            </footer>
+        </div>
+    </body>
+</html>

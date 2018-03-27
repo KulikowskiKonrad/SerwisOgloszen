@@ -1,0 +1,52 @@
+﻿@using SerwisOgloszen.Models
+@model List<ListaKonwersacjiViewModel>
+
+
+
+
+<h2>Lista Wiadomości</h2>
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table">
+            <tr>
+                <th>
+                    Użytkownik
+                </th>
+                <th>
+                    Ogłoszenie
+                </th>
+                <th>
+                    Data ostatniej wiadomości
+                </th>
+                <th class="text-right" style="width:150px;">
+                    Ilość wiadomości
+                </th>
+                <th>
+
+                </th>
+            </tr>
+            @foreach (ListaKonwersacjiViewModel konwersacja in Model)
+            {
+                <tr>
+                    <td>
+                        @konwersacja.LoginUzytkownika
+                    </td>
+                    <td>
+                        @konwersacja.TematOgloszenia
+                    </td>
+                    <td>
+                        @konwersacja.DataOstatniejWiadomosci
+                    </td>
+                    <td class="text-right">
+                        @konwersacja.IloscWiadomosci
+                    </td>
+                    <td>
+                        <a href="@Url.Action("WyslijWiadomosc", "Wiadomosc", new {
+                                ogloszenieId = konwersacja.OgloszenieId, odbierajacyUzytkownikId =konwersacja.UzytkownikId})"
+                           class="btn btn-default btn-sm"><span class="glyphicon glyphicon-envelope"></span></a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

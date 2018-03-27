@@ -1,0 +1,66 @@
+﻿@using SerwisOgloszen.Models
+@model LogowanieViewModel
+@{
+    ViewBag.Title = "Logowanie";
+}
+
+<h2>Logowanie</h2>
+
+@using (Html.BeginForm("Zaloguj", "Uzytkownik", FormMethod.Post))
+{
+    <div class="row">
+        @*klasa do wierszy (dane elementy sa w nowej lini )*@
+        <div class="col-sm-5 col-md-3">
+            @*klasa col w zaleznosci czy sm czy md (sugeruje wielkosc wyswietlacza uzytkownika) dostosowuje aplikacje do wielkosci*@
+            <div class="form-group">
+                @*@Html.Label("Login")*@  @*wyswietle tekstu login w tagu label*@
+                @Html.LabelFor(x => x.Login) @*to jest to samo co label zwykly tylko ze pobiera nazwe pola z modelu*@
+                <div class="input-group">
+                    @*ta klasa daje szare pole w text box*@
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div> @*ten span sluzy do dodana ikonki  a div to jest moje szare pole w tex box*@
+                    @Html.TextBoxFor(x => x.Login, new { @class = "form-control", placeholder = Html.DisplayNameFor(x => x.Login) }) @*placeholder
+                        sluzy do pobrania nazwy pola do tex box*@
+                </div>
+                @Html.ValidationMessageFor(x => x.Login)  @*bez tego nie pojawi sie komunikat ktory napisalismy w viewModel nad polem*@
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-5 col-md-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Haslo)
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                    @Html.PasswordFor(x => x.Haslo, new
+               {
+                   @class = "form-control",
+                   placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(x => x.Haslo).ToHtmlString())
+               })
+                </div>
+                @Html.ValidationMessageFor(x => x.Haslo)
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-5 col-md-3">
+            @Html.CheckBoxFor(x => x.ZapamietajMnie)
+            @Html.LabelFor(x => x.ZapamietajMnie)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <button class="btn btn-default">Zaloguj</button>
+        </div>
+    </div>
+}
+<div class=" row">
+    <div class="col-sm-5 col-md-3">
+        @Html.Partial("_ZewnetrznePortaleDoLogowania")
+    </div>
+</div>
+
+
+

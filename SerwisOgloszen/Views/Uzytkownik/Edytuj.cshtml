@@ -1,0 +1,57 @@
+﻿@using SerwisOgloszen.BazaDanych
+@using SerwisOgloszen.Models
+@model EdytujViewModel
+
+
+<h2>Edytuj - @Model.Login</h2>
+
+
+@using (Html.BeginForm("Edytuj", "Uzytkownik", FormMethod.Post))
+{
+    @Html.HiddenFor(x=>x.Id)
+    <div class="row">
+        <div class="col-sm-5 col-md-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Haslo)
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                    @Html.PasswordFor(x => x.Haslo, new
+               {
+                   @class = "form-control",
+                   placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(x => x.Haslo).ToHtmlString())
+               })
+                </div>
+                @Html.ValidationMessageFor(x => x.Haslo)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-5 col-md-3">
+            <div class="form-group ">
+                @Html.LabelFor(x => x.PowtorzoneHaslo)
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                    @Html.PasswordFor(x => x.PowtorzoneHaslo, new
+               {
+                   @class = "form-control",
+                   placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(x => x.PowtorzoneHaslo).ToHtmlString())
+               })
+                </div>
+                @Html.ValidationMessageFor(x => x.PowtorzoneHaslo)
+            </div>
+        </div>
+    </div>
+ <div class="row">
+     <div class="col-sm-2 col-md-2">
+         <div class="form-group">
+             @Html.LabelFor(x=>x.Rola)
+             @Html.DropDownListFor(x=>x.Rola,Model.ListaRol,new { @class = "form-control" })
+         </div>
+     </div>
+ </div>
+    <button class="btn btn-default">Edytuj</button>
+    <button class="btn btn-default">Anuluj</button>
+
+}
+
+

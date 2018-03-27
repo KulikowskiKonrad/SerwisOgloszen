@@ -1,0 +1,74 @@
+﻿@model List<Kategoria>
+@using SerwisOgloszen.Enums;
+@using SerwisOgloszen.BazaDanych;
+
+
+
+<h2>Lista Kategorii</h2>
+<script>
+
+    $(document).ready(function () {
+        $('.btn-usun').click(function () {
+            var btn = $(this);
+
+            swal({
+                title: 'Na pewno chcesz to usunąć?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Tak,chcę to usunąć!',
+                cancelButtonText: 'Anuluj'
+            }).then(function () {
+                $(btn).closest('form').submit();
+            })
+        });
+
+    });
+
+</script>
+
+
+<div class=" row">
+    <div class="col-sm-8">
+        <table class="table table-striped">
+            <tr>
+                @using (Html.BeginForm("Zapisz", "Kategoria", FormMethod.Get))
+                {
+                    <button class="btn btn-default">Dodaj kategorię</button>
+                }
+            </tr>
+            <tr>
+                <th>
+                    Nazwa
+                </th>
+                <th>
+                </th>
+                <th></th>
+            </tr>
+
+            <tr>
+                @foreach (Kategoria kategoria in Model)
+                {
+                <tr>
+                    <td>
+                        @kategoria.Nazwa
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("Usun", "Kategoria", FormMethod.Post))
+                        {
+                            @Html.Hidden("id", kategoria.Id)  @*nazwa ma byc tak jak nazwa parametru w kontrolerze , a wartosc pobieramy z konkretnego elementu modelu*@
+                            <button type="button" class="btn btn-default btn-sm btn-usun">
+                                <span class="glyphicon glyphicon-trash "></span>
+                            </button>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Zapisz", "Kategoria", new { id = kategoria.Id })" c class="btn btn-default btn-sm"><span class="glyphicon glyphicon-cog"></span></a>
+                        @*to jest zamiana actionLink na a*@
+                    </td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>

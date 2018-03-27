@@ -1,0 +1,356 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SerwisOgloszenModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Kategoria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nazwa" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CzyUsunieta" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ogloszenie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tresc" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UzytkownikId" Type="bigint" Nullable="false" />
+          <Property Name="DataDodania" Type="datetime" Nullable="false" />
+          <Property Name="CzyUsuniete" Type="bit" Nullable="false" />
+          <Property Name="Temat" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="KategoriaId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Uzytkownik">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Haslo" Type="char" MaxLength="32" Nullable="false" />
+          <Property Name="Rola" Type="tinyint" Nullable="false" />
+          <Property Name="CzyUsuniety" Type="bit" Nullable="false" />
+          <Property Name="Sol" Type="char" MaxLength="36" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Wiadomosc">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WysylajacyUzytkownikId" Type="bigint" Nullable="false" />
+          <Property Name="DataDodania" Type="datetime" Nullable="false" />
+          <Property Name="Tresc" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="OdbierajacyUzytkownikId" Type="bigint" Nullable="false" />
+          <Property Name="OgloszenieId" Type="bigint" Nullable="false" />
+          <Property Name="CzyOdczytano" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Ogloszenie_Kategoria">
+          <End Role="Kategoria" Type="Self.Kategoria" Multiplicity="1" />
+          <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategoria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ogloszenie">
+              <PropertyRef Name="KategoriaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ogloszenie_Uzytkownik">
+          <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+          <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ogloszenie">
+              <PropertyRef Name="UzytkownikId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Wiadomosc_Ogloszenie">
+          <End Role="Ogloszenie" Type="Self.Ogloszenie" Multiplicity="1" />
+          <End Role="Wiadomosc" Type="Self.Wiadomosc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ogloszenie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Wiadomosc">
+              <PropertyRef Name="OgloszenieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Wiadomosc_Uzytkownik">
+          <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+          <End Role="Wiadomosc" Type="Self.Wiadomosc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Wiadomosc">
+              <PropertyRef Name="WysylajacyUzytkownikId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Wiadomosc_Uzytkownik1">
+          <End Role="Uzytkownik" Type="Self.Uzytkownik" Multiplicity="1" />
+          <End Role="Wiadomosc" Type="Self.Wiadomosc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Wiadomosc">
+              <PropertyRef Name="OdbierajacyUzytkownikId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SerwisOgloszenModelStoreContainer">
+          <EntitySet Name="Kategoria" EntityType="Self.Kategoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ogloszenie" EntityType="Self.Ogloszenie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Uzytkownik" EntityType="Self.Uzytkownik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Wiadomosc" EntityType="Self.Wiadomosc" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Ogloszenie_Kategoria" Association="Self.FK_Ogloszenie_Kategoria">
+            <End Role="Kategoria" EntitySet="Kategoria" />
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ogloszenie_Uzytkownik" Association="Self.FK_Ogloszenie_Uzytkownik">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Wiadomosc_Ogloszenie" Association="Self.FK_Wiadomosc_Ogloszenie">
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+            <End Role="Wiadomosc" EntitySet="Wiadomosc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Wiadomosc_Uzytkownik" Association="Self.FK_Wiadomosc_Uzytkownik">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Wiadomosc" EntitySet="Wiadomosc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Wiadomosc_Uzytkownik1" Association="Self.FK_Wiadomosc_Uzytkownik1">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Wiadomosc" EntitySet="Wiadomosc" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SerwisOgloszenModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SerwisOgloszenEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Kategoria" EntityType="SerwisOgloszenModel.Kategoria" />
+          <EntitySet Name="Ogloszenie" EntityType="SerwisOgloszenModel.Ogloszenie" />
+          <EntitySet Name="Uzytkownik" EntityType="SerwisOgloszenModel.Uzytkownik" />
+          <EntitySet Name="Wiadomosc" EntityType="SerwisOgloszenModel.Wiadomosc" />
+          <AssociationSet Name="FK_Ogloszenie_Kategoria" Association="SerwisOgloszenModel.FK_Ogloszenie_Kategoria">
+            <End Role="Kategoria" EntitySet="Kategoria" />
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ogloszenie_Uzytkownik" Association="SerwisOgloszenModel.FK_Ogloszenie_Uzytkownik">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Wiadomosc_Ogloszenie" Association="SerwisOgloszenModel.FK_Wiadomosc_Ogloszenie">
+            <End Role="Ogloszenie" EntitySet="Ogloszenie" />
+            <End Role="Wiadomosc" EntitySet="Wiadomosc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Wiadomosc_Uzytkownik" Association="SerwisOgloszenModel.FK_Wiadomosc_Uzytkownik">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Wiadomosc" EntitySet="Wiadomosc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Wiadomosc_Uzytkownik1" Association="SerwisOgloszenModel.FK_Wiadomosc_Uzytkownik1">
+            <End Role="Uzytkownik" EntitySet="Uzytkownik" />
+            <End Role="Wiadomosc" EntitySet="Wiadomosc" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Kategoria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nazwa" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Ogloszenie" Relationship="SerwisOgloszenModel.FK_Ogloszenie_Kategoria" FromRole="Kategoria" ToRole="Ogloszenie" />
+          <Property Name="CzyUsunieta" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ogloszenie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tresc" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UzytkownikId" Type="Int64" Nullable="false" />
+          <Property Name="DataDodania" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CzyUsuniete" Type="Boolean" Nullable="false" />
+          <Property Name="Temat" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="KategoriaId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Kategoria" Relationship="SerwisOgloszenModel.FK_Ogloszenie_Kategoria" FromRole="Ogloszenie" ToRole="Kategoria" />
+          <NavigationProperty Name="Uzytkownik" Relationship="SerwisOgloszenModel.FK_Ogloszenie_Uzytkownik" FromRole="Ogloszenie" ToRole="Uzytkownik" />
+          <NavigationProperty Name="Wiadomosc" Relationship="SerwisOgloszenModel.FK_Wiadomosc_Ogloszenie" FromRole="Ogloszenie" ToRole="Wiadomosc" />
+        </EntityType>
+        <EntityType Name="Uzytkownik">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Haslo" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="false" />
+          <Property Name="Rola" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Ogloszenie" Relationship="SerwisOgloszenModel.FK_Ogloszenie_Uzytkownik" FromRole="Uzytkownik" ToRole="Ogloszenie" />
+          <NavigationProperty Name="Wiadomosc" Relationship="SerwisOgloszenModel.FK_Wiadomosc_Uzytkownik" FromRole="Uzytkownik" ToRole="Wiadomosc" />
+          <NavigationProperty Name="Wiadomosc1" Relationship="SerwisOgloszenModel.FK_Wiadomosc_Uzytkownik1" FromRole="Uzytkownik" ToRole="Wiadomosc" />
+          <Property Name="CzyUsuniety" Type="Boolean" Nullable="false" />
+          <Property Name="Sol" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Wiadomosc">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WysylajacyUzytkownikId" Type="Int64" Nullable="false" />
+          <Property Name="DataDodania" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Tresc" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OdbierajacyUzytkownikId" Type="Int64" Nullable="false" />
+          <Property Name="OgloszenieId" Type="Int64" Nullable="false" />
+          <Property Name="CzyOdczytano" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Ogloszenie" Relationship="SerwisOgloszenModel.FK_Wiadomosc_Ogloszenie" FromRole="Wiadomosc" ToRole="Ogloszenie" />
+          <NavigationProperty Name="UzytkownikWysylajacy" Relationship="SerwisOgloszenModel.FK_Wiadomosc_Uzytkownik" FromRole="Wiadomosc" ToRole="Uzytkownik" />
+          <NavigationProperty Name="UzytkownikOdbierajacy" Relationship="SerwisOgloszenModel.FK_Wiadomosc_Uzytkownik1" FromRole="Wiadomosc" ToRole="Uzytkownik" />
+        </EntityType>
+        <Association Name="FK_Ogloszenie_Kategoria">
+          <End Type="SerwisOgloszenModel.Kategoria" Role="Kategoria" Multiplicity="1" />
+          <End Type="SerwisOgloszenModel.Ogloszenie" Role="Ogloszenie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategoria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ogloszenie">
+              <PropertyRef Name="KategoriaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ogloszenie_Uzytkownik">
+          <End Type="SerwisOgloszenModel.Uzytkownik" Role="Uzytkownik" Multiplicity="1" />
+          <End Type="SerwisOgloszenModel.Ogloszenie" Role="Ogloszenie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ogloszenie">
+              <PropertyRef Name="UzytkownikId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Wiadomosc_Ogloszenie">
+          <End Type="SerwisOgloszenModel.Ogloszenie" Role="Ogloszenie" Multiplicity="1" />
+          <End Type="SerwisOgloszenModel.Wiadomosc" Role="Wiadomosc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ogloszenie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Wiadomosc">
+              <PropertyRef Name="OgloszenieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Wiadomosc_Uzytkownik">
+          <End Type="SerwisOgloszenModel.Uzytkownik" Role="Uzytkownik" Multiplicity="1" />
+          <End Type="SerwisOgloszenModel.Wiadomosc" Role="Wiadomosc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Wiadomosc">
+              <PropertyRef Name="WysylajacyUzytkownikId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Wiadomosc_Uzytkownik1">
+          <End Type="SerwisOgloszenModel.Uzytkownik" Role="Uzytkownik" Multiplicity="1" />
+          <End Type="SerwisOgloszenModel.Wiadomosc" Role="Wiadomosc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uzytkownik">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Wiadomosc">
+              <PropertyRef Name="OdbierajacyUzytkownikId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SerwisOgloszenModelStoreContainer" CdmEntityContainer="SerwisOgloszenEntities">
+          <EntitySetMapping Name="Kategoria">
+            <EntityTypeMapping TypeName="SerwisOgloszenModel.Kategoria">
+              <MappingFragment StoreEntitySet="Kategoria">
+                <ScalarProperty Name="CzyUsunieta" ColumnName="CzyUsunieta" />
+                <ScalarProperty Name="Nazwa" ColumnName="Nazwa" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ogloszenie">
+            <EntityTypeMapping TypeName="SerwisOgloszenModel.Ogloszenie">
+              <MappingFragment StoreEntitySet="Ogloszenie">
+                <ScalarProperty Name="KategoriaId" ColumnName="KategoriaId" />
+                <ScalarProperty Name="Temat" ColumnName="Temat" />
+                <ScalarProperty Name="CzyUsuniete" ColumnName="CzyUsuniete" />
+                <ScalarProperty Name="DataDodania" ColumnName="DataDodania" />
+                <ScalarProperty Name="UzytkownikId" ColumnName="UzytkownikId" />
+                <ScalarProperty Name="Tresc" ColumnName="Tresc" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Uzytkownik">
+            <EntityTypeMapping TypeName="SerwisOgloszenModel.Uzytkownik">
+              <MappingFragment StoreEntitySet="Uzytkownik">
+                <ScalarProperty Name="Sol" ColumnName="Sol" />
+                <ScalarProperty Name="CzyUsuniety" ColumnName="CzyUsuniety" />
+                <ScalarProperty Name="Rola" ColumnName="Rola" />
+                <ScalarProperty Name="Haslo" ColumnName="Haslo" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Wiadomosc">
+            <EntityTypeMapping TypeName="SerwisOgloszenModel.Wiadomosc">
+              <MappingFragment StoreEntitySet="Wiadomosc">
+                <ScalarProperty Name="CzyOdczytano" ColumnName="CzyOdczytano" />
+                <ScalarProperty Name="OgloszenieId" ColumnName="OgloszenieId" />
+                <ScalarProperty Name="OdbierajacyUzytkownikId" ColumnName="OdbierajacyUzytkownikId" />
+                <ScalarProperty Name="Tresc" ColumnName="Tresc" />
+                <ScalarProperty Name="DataDodania" ColumnName="DataDodania" />
+                <ScalarProperty Name="WysylajacyUzytkownikId" ColumnName="WysylajacyUzytkownikId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

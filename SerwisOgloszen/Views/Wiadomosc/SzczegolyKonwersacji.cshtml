@@ -1,0 +1,67 @@
+﻿@model SerwisOgloszen.Models.SzczegolyKonwersacjiViewModel
+@using SerwisOgloszen.BazaDanych
+
+<h2>Szczegóły konwersacji -  @Model.Ogloszenie.Temat </h2>
+@*@Html.ActionLink("Wyślij wiadomość", "WyslijWiadomosc", "Wiadomosc",new { id = .Id })*@
+
+@using (Html.BeginForm("WyslijWiadomosc", "Wiadomosc", FormMethod.Post))
+{
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Tresc)
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></div>
+                    @Html.TextAreaFor(x => x.Tresc, new { @class = "form-control", placeholder = Html.DisplayNameFor(x => x.Tresc) })
+                </div>
+                @Html.ValidationMessageFor(x => x.Tresc)
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(x=>x.OgloszenieId)
+    @Html.HiddenFor(x=>x.OdbierajacyUzytkownikId)
+        <button class="btn btn-default">Wyślij</button>
+}
+
+<div class="row" style="margin-top:10px;">
+    <div class="col-lg-12">
+        <table class="table">
+            <tr>
+                <th>
+                    Nadawca
+                </th>
+                <th>
+                    Treść
+                </th>
+                <th>
+                    Odbiorca
+                </th>
+                <th>
+                    Data dodania
+                </th>
+            </tr>
+            @foreach (Wiadomosc wiadomosc in Model.ListaWiadomosci)
+            {
+                <tr>
+                    <td>
+                        @wiadomosc.UzytkownikWysylajacy.Login
+                    </td>
+                    <td>
+                        @wiadomosc.Tresc
+                    </td>
+                    <td>
+                        @wiadomosc.UzytkownikOdbierajacy.Login
+                    </td>
+                    <td>
+                        @wiadomosc.DataDodania
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,59 @@
+﻿@using SerwisOgloszen.Models
+@model RejestracjaViewModel
+@*sluzy do korzystania z pol w modelu i do zdefiniowania typu widoku*@
+
+<h2>Rejestracja</h2>
+
+@using (Html.BeginForm("Zarejestruj", "Uzytkownik", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-sm-5 col-md-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Login)
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                    @Html.TextBoxFor(x => x.Login, new { @class = "form-control", placeholder = Html.DisplayNameFor(x => x.Login) })
+                </div>
+                @Html.ValidationMessageFor(x => x.Login)
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-5 col-md-3">
+            <div class="form-group ">
+                @Html.LabelFor(x => x.Haslo)
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                    @Html.PasswordFor(x => x.Haslo, new { @class = "form-control", placeholder = Html.DisplayNameFor(x => x.Haslo) })
+                </div>
+                @Html.ValidationMessageFor(x => x.Haslo)
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-5 col-md-3">
+            <div class="form-group ">
+                @Html.LabelFor(x => x.PowtorzoneHaslo)
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                    @Html.PasswordFor(x => x.PowtorzoneHaslo, new
+               {
+                   @class = "form-control",
+                   placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(x => x.PowtorzoneHaslo).ToHtmlString())
+               })
+                </div>
+                @Html.ValidationMessageFor(x => x.PowtorzoneHaslo)
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-default">Rejestracja</button>
+
+
+
+
+
+}

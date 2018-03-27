@@ -1,0 +1,71 @@
+﻿@using SerwisOgloszen.BazaDanych
+@model  List<Uzytkownik>
+@using SerwisOgloszen.Enums
+
+<script>
+
+    $(document).ready(function () {
+        $('.btn-usun').click(function () {
+            var btn = $(this);
+
+            swal({
+                title: 'Na pewno chcesz go usunąć?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Tak,chcę go usunąć!',
+                cancelButtonText: 'Anuluj'
+            }).then(function () {
+                $(btn).closest('form').submit();
+            })
+        });
+
+    });
+
+</script>
+
+<h2>Lista użytkowników</h2>
+
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    Login
+                </th>
+                <th>
+                    Rola
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (Uzytkownik uzytkownik in Model)
+            {
+                <tr>
+                    <td>
+                        @uzytkownik.Login
+                    </td>
+                    <td>
+                        @((RolaUzytkownika)uzytkownik.Rola)
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("Usun", "Uzytkownik", FormMethod.Post))
+                        {
+                            @Html.Hidden("id", uzytkownik.Id)  @*nazwa ma byc tak jak nazwa parametru w kontrolerze , a wartosc pobieramy z konkretnego elementu modelu*@
+                            <button type="button" class="glyphicon glyphicon-trash btn-usun"></button>
+                        }
+                    </td>
+
+                    <td>
+                        @using (Html.BeginForm("Edytuj", "Uzytkownik", FormMethod.Get))
+                        {
+                            @Html.Hidden("id", uzytkownik.Id)
+                            <button class="glyphicon glyphicon-cog"></button>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@using SerwisOgloszen.BazaDanych
+@model SerwisOgloszen.Models.WyslijWiadomoscViewModel
+
+
+<h2>Napisz wiadomość</h2>
+
+
+<div class="row">
+    <div class="col-sm-5 col-md-3">
+        <div class="form-group">
+            @Html.LabelFor(x=>x.Tresc)
+            <div class=" input-group"
+                  <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div> @*ten span sluzy do dodana ikonki  a div to jest moje szare pole w tex box*@
+                    @Html.TextAreaFor(x => x.Tresc, new { @class = "form-control", placeholder = Html.DisplayNameFor(x => x.Tresc) })
+            </div>
+        </div>
+
+</div>

@@ -1,0 +1,122 @@
+﻿@model  List<Ogloszenie>
+@using SerwisOgloszen.Enums;
+@using SerwisOgloszen.BazaDanych;
+
+
+<h2>Lista Ogłoszeń</h2>
+
+<script>
+
+    $(document).ready(function () {
+        $('.btn-usun').click(function () {
+            var btn = $(this);
+
+            swal({
+                title: 'Na pewno chcesz to usunąć?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Tak,chcę to usunąć!',
+                cancelButtonText: 'Anuluj'
+            }).then(function () {
+                $(btn).closest('form').submit();
+            })
+        });
+
+    });
+
+</script>
+
+<div class=" row">
+    <div class="col-sm-12">
+        <table class="table table-striped">
+
+            @if (Request.IsAuthenticated == true)
+            {
+                <tr>
+                    @using (Html.BeginForm("Zapisz", "Ogloszenie", FormMethod.Get))
+                    {
+                        <button class="btn btn-default">Dodaj ogłoszenie</button>
+                    }
+                </tr>
+            }
+
+            <tr>
+                <th>
+                    Temat
+                </th>
+                <th>
+                    Treść
+                </th>
+                <th>
+                    Kategoria
+                </th>
+                <th>Autor</th>
+                <th>Dodano</th>
+                @if (Request.IsAuthenticated == true)
+                {
+                    <th></th>
+                    <th></th>
+
+                }
+                @if (Request.IsAuthenticated == true && (RolaUzytkownika)((Uzytkownik)Session["uzytkownik"]).Rola == RolaUzytkownika.Administrator)
+                {
+                    <th></th>
+
+
+                }
+            </tr>
+
+            @foreach (Ogloszenie ogloszenie in Model)
+            {
+                <tr>
+                    <td>
+                        @ogloszenie.Temat
+                    </td>
+                    <td>
+                        <span style="white-space: pre-wrap">@ogloszenie.Tresc</span>
+                    </td>
+                    <td>
+                        @ogloszenie.Kategoria.Nazwa
+                    </td>
+                    <td>
+                        @ogloszenie.Uzytkownik.Login
+                    </td>
+                    <td>
+                        @ogloszenie.DataDodania
+                    </td>
+
+                    @if (Request.IsAuthenticated == true) //warunek sprawdzenia czy jestem zalogowany jezeli tak to ide dalej
+                    {
+                        if (((Uzytkownik)Session["uzytkownik"]).Id == ogloszenie.UzytkownikId
+                        || (RolaUzytkownika)((Uzytkownik)Session["uzytkownik"]).Rola == RolaUzytkownika.Administrator) //sprawdzam czy to moje ogloszenie lub czy jestem administratorem
+                        {
+                            <td>
+                                @using (Html.BeginForm("Usun", "Ogloszenie", FormMethod.Post))
+                                {
+                                    @Html.Hidden("id", ogloszenie.Id)  @*nazwa ma byc tak jak nazwa parametru w kontrolerze , a wartosc pobieramy z konkretnego elementu modelu*@
+                                    <button type="button" class="btn btn-default btn-sm btn-usun">
+                                        <span class="glyphicon glyphicon-trash "></span>
+                                    </button>
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Zapisz", "Ogloszenie", new { id = ogloszenie.Id })" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-cog"></span></a>
+                                @*to jest zamiana actionLink na a*@
+                            </td>
+                        }
+                        if (((Uzytkownik)Session["uzytkownik"]).Id != ogloszenie.UzytkownikId) //sprawdzam czy to nie moje ogloszenie. Jest ten wqarunek po to zeby nie wysylac wiadomosci do siebie
+                        {
+
+                            <td>
+                                <a href="@Url.Action("WyslijWiadomosc", "Wiadomosc", new { ogloszenieId = ogloszenie.Id, odbierajacyUzytkownikId = ogloszenie.UzytkownikId })"
+                                   class="btn btn-default btn-sm"><span class="glyphicon glyphicon-envelope"></span></a>
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+</div>
